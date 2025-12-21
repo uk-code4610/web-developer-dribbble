@@ -1,55 +1,41 @@
 "use client";
-export interface newPostCards {
+export interface PostCardsType {
   id: string;
   title: string;
   description: string;
-  imageUrl: string;
+  image_url: string;
   author: string;
 }
 
-import PostCard from "@/components/PostCard";
-import PostForm from "@/components/PostForm";
-import { useState } from "react";
+import { supabase } from "../lib/supabase/client";
+import PostCard from "@/app/components/PostCard";
+import { useState, useEffect } from "react";
 
 const Page = () => {
-  const [posts, setPosts] = useState([
-    {
-      id: "1",
-      title: "Mountain Climbing UI",
-      description: "A UI design for climbers.",
-      imageUrl: "/afro_logo.svg",
-      author: "Alice",
-    },
-    {
-      id: "2",
-      title: "Travel Planner App",
-      description: "Organize trips efficiently.",
-      imageUrl: "/vercel.svg",
-      author: "Bob",
-    },
-    {
-      id: "3",
-      title: "Recipe Sharing Platform",
-      description: "Share your favorite recipes.",
-      imageUrl: "/vercel.svg",
-      author: "Charlie",
-    },
-  ]);
-  const addPost = (newPost: newPostCards) => {
-    setPosts([...posts, newPost]);
-  };
+  const [posts, setPosts] = useState<PostCardsType[]>([]);
+  useEffect(() => {
+    const fetchPosts = async () => {
+      const { data, error } = await supabase.from("posts").select("*");
+      if (error) console.error("Error");
+      else setPosts(data);
+      console.log("Fetched posts:", data);
+
+      console.log(data);
+    };
+    fetchPosts();
+  }, []);
   return (
     <div>
-      {posts.map((post) => (
+      <h1>Posts</h1>
+      {posts.map((post: PostCardsType) => (
         <PostCard
           key={post.id}
           title={post.title}
           description={post.description}
-          imageUrl={post.imageUrl}
+          image_url={post.image_url}
           author={post.author}
         />
       ))}
-      <PostForm onSubmit={addPost} />
     </div>
   );
 };
