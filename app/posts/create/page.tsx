@@ -1,11 +1,14 @@
 "use client";
 import { useState } from "react";
 import { supabase } from "@/app/lib/supabase/client";
+import { useRouter } from "next/navigation";
+
 const CreatePostPage = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [imageUrl, setImageUrl] = useState("");
   const [author, setAuthor] = useState("");
+  const router = useRouter();
 
   const addButton = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -24,6 +27,9 @@ const CreatePostPage = () => {
     setAuthor("");
     if (error) {
       console.error("Error inserting post:", error);
+    } else {
+      alert("投稿が追加されました！");
+      router.push("/posts");
     }
   };
   return (
