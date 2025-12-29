@@ -6,13 +6,31 @@ import { useRouter } from "next/navigation";
 const CreatePostPage = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [imageUrl, setImageUrl] = useState("");
+  const [imageFile, setImageFile] = useState<File | null>(null);
   const [author, setAuthor] = useState("");
   const router = useRouter();
 
   const addButton = async (event: React.FormEvent) => {
     event.preventDefault();
-    const { data, error } = await supabase.from("posts").insert([
+    if (!imageFile) return;
+    const ext = imageFile.name.split(".").pop();
+    const fileName = `${Date.now()}.${ext}`;
+    const result = await supabase.storage
+      .from("post-images")
+      .upload(fileName, imageFile, {
+        contentType: imageFile.type,
+      });
+    const uploadError = result.error;
+    if (uploadError) {
+      console.error(uploadError);
+      alert(uploadError.message);
+      return;
+    }
+    const { data } = supabase.storage
+      .from("post-images")
+      .getPublicUrl(fileName);
+    const imageUrl = data.publicUrl;
+    const { error } = await supabase.from("posts").insert([
       {
         title: title,
         description: description,
@@ -23,7 +41,7 @@ const CreatePostPage = () => {
     console.log(data);
     setTitle("");
     setDescription("");
-    setImageUrl("");
+    setImageFile(null);
     setAuthor("");
     if (error) {
       console.error("Error inserting post:", error);
@@ -32,6 +50,7 @@ const CreatePostPage = () => {
       router.push("/posts");
     }
   };
+
   return (
     <form
       onSubmit={addButton}
@@ -56,11 +75,14 @@ const CreatePostPage = () => {
         />
       </label>
       <label className="block text-sm font-medium text-gray-700">
-        画像URL
+        画像
         <input
-          type="text"
-          value={imageUrl}
-          onChange={(e) => setImageUrl(e.target.value)}
+          type="file"
+          accept="image/*"
+          onChange={(e) => {
+            if (!e.target.files) return;
+            setImageFile(e.target.files[0]);
+          }}
           className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-black focus:outline-none"
         />
       </label>
