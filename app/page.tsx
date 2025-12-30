@@ -1,41 +1,22 @@
-const posts = [
-  {
-    id: "1",
-    title: "Mountain Climbing UI",
-    description: "A UI design for climbers.",
-    imageUrl: "/afro_logo.svg",
-    author: "Alice",
-  },
-  {
-    id: "2",
-    title: "Travel Planner App",
-    description: "Organize trips efficiently.",
-    imageUrl: "/vercel.svg",
-    author: "Bob",
-  },
-  {
-    id: "3",
-    title: "Recipe Sharing Platform",
-    description: "Share your favorite recipes.",
-    imageUrl: "/vercel.svg",
-    author: "Charlie",
-  },
-];
-
-import PostCard from "./components/PostCard";
+"use client";
+import { useRouter } from "next/navigation";
 
 const Page = () => {
+  const router = useRouter();
+  const toPosts = () => {
+    router.push("/posts");
+  };
+  const toCreate = () => {
+    router.push("/posts/create");
+  };
   return (
     <div>
-      {posts.map((post) => (
-        <PostCard
-          key={post.id}
-          title={post.title}
-          description={post.description}
-          imageUrl={post.imageUrl}
-          author={post.author}
-        />
-      ))}
+      <div>
+        <button onClick={toPosts}>一覧表示</button>
+      </div>
+      <div>
+        <button onClick={toCreate}>新規作成</button>
+      </div>
     </div>
   );
 };

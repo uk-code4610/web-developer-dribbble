@@ -80,7 +80,8 @@ const CreatePostPage = () => {
           accept="image/*"
           onChange={(e) => {
             if (!e.target.files) return;
-            setImageFile(e.target.files[0]);
+            const file = e.target.files[0];
+            setImageFile(new File([file], "upload.png", { type: file.type }));
           }}
           className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-black focus:outline-none"
         />

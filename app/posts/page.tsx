@@ -18,9 +18,6 @@ const Page = () => {
       const { data, error } = await supabase.from("posts").select("*");
       if (error) console.error("Error");
       else setPosts(data);
-      console.log("Fetched posts:", data);
-
-      console.log(data);
     };
     fetchPosts();
   }, []);
