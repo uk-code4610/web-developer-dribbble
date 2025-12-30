@@ -8,10 +8,13 @@ const CreatePostPage = () => {
   const [description, setDescription] = useState("");
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [author, setAuthor] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
 
   const addButton = async (event: React.FormEvent) => {
     event.preventDefault();
+    if (isSubmitting) return;
+    setIsSubmitting(true);
     if (!imageFile) return;
     const ext = imageFile.name.split(".").pop();
     const fileName = `${Date.now()}.${ext}`;
@@ -23,6 +26,7 @@ const CreatePostPage = () => {
     if (uploadError) {
       console.error(uploadError);
       alert(uploadError.message);
+      setIsSubmitting(false);
       return;
     }
     const { data } = supabase.storage
@@ -44,6 +48,7 @@ const CreatePostPage = () => {
     setAuthor("");
     if (error) {
       console.error("Error inserting post:", error);
+      setIsSubmitting(false);
     } else {
       alert("投稿が追加されました！");
       router.push("/posts");
@@ -97,9 +102,14 @@ const CreatePostPage = () => {
       </label>
       <button
         type="submit"
-        className="w-full rounded-md bg-black py-2 text-sm font-semibold text-white hover:bg-gray-800"
+        disabled={isSubmitting}
+        className={`w-full rounded-md py-2 text-sm font-semibold text-white ${
+          isSubmitting
+            ? "bg-gray-400 cursor-not-allowed"
+            : "bg-black hover:bg-gray-800"
+        }`}
       >
-        投稿
+        {isSubmitting ? "送信中..." : "投稿"}
       </button>
     </form>
   );
