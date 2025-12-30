@@ -15,12 +15,11 @@ const CreatePostPage = () => {
     if (!imageFile) return;
     const ext = imageFile.name.split(".").pop();
     const fileName = `${Date.now()}.${ext}`;
-    const result = await supabase.storage
+    const { error: uploadError } = await supabase.storage
       .from("post-images")
       .upload(fileName, imageFile, {
         contentType: imageFile.type,
       });
-    const uploadError = result.error;
     if (uploadError) {
       console.error(uploadError);
       alert(uploadError.message);
