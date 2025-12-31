@@ -49,12 +49,14 @@ const CreatePostPage = () => {
       .from("post-images")
       .getPublicUrl(fileName);
     const imageUrl = data.publicUrl;
+    const { data: userData, error: userError } = await supabase.auth.getUser();
+    const userId = userData.user?.id;
     const { error } = await supabase.from("posts").insert([
       {
         title: title,
         description: description,
         image_url: imageUrl,
-        author: username,
+        user_id: userId,
       },
     ]);
     console.log(data);

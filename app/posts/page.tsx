@@ -4,7 +4,9 @@ export interface PostCardsType {
   title: string;
   description: string;
   image_url: string;
-  author: string;
+  profiles: {
+    name: string;
+  } | null;
 }
 
 import { supabase } from "../lib/supabase/client";
@@ -15,7 +17,10 @@ const Page = () => {
   const [posts, setPosts] = useState<PostCardsType[]>([]);
   useEffect(() => {
     const fetchPosts = async () => {
-      const { data, error } = await supabase.from("posts").select("*");
+      const { data, error } = await supabase
+        .from("posts")
+        .select("*,profiles(name)")
+        .order("created_at", { ascending: false });
       if (error) console.error("Error");
       else setPosts(data);
     };
@@ -30,7 +35,7 @@ const Page = () => {
           title={post.title}
           description={post.description}
           image_url={post.image_url}
-          author={post.author}
+          author={post.profiles?.name ?? "不明"}
         />
       ))}
     </div>
