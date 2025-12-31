@@ -2,13 +2,14 @@
 import { useState, useEffect } from "react";
 import { supabase } from "@/app/lib/supabase/client";
 import { useRouter } from "next/navigation";
+import Button from "@/app/components/SendButton";
 
 const CreatePostPage = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [username, setUsername] = useState<string | null>(null);
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isCreating, setCcreating] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -28,8 +29,8 @@ const CreatePostPage = () => {
 
   const addButton = async (event: React.FormEvent) => {
     event.preventDefault();
-    if (isSubmitting) return;
-    setIsSubmitting(true);
+    if (isCreating) return;
+    setCcreating(true);
     if (!imageFile) return;
     const ext = imageFile.name.split(".").pop();
     const fileName = `${Date.now()}.${ext}`;
@@ -41,7 +42,7 @@ const CreatePostPage = () => {
     if (uploadError) {
       console.error(uploadError);
       alert(uploadError.message);
-      setIsSubmitting(false);
+      setCcreating(false);
       return;
     }
     const { data } = supabase.storage
@@ -62,9 +63,10 @@ const CreatePostPage = () => {
     setImageFile(null);
     if (error) {
       console.error("Error inserting post:", error);
-      setIsSubmitting(false);
+      setCcreating(false);
     } else {
       alert("投稿が追加されました！");
+      setCcreating(false);
       router.push("/posts");
     }
   };
@@ -112,17 +114,9 @@ const CreatePostPage = () => {
           <span className="front-medium">{username}</span>
         </div>
       </label>
-      <button
-        type="submit"
-        disabled={isSubmitting}
-        className={`w-full rounded-md py-2 text-sm font-semibold text-white ${
-          isSubmitting
-            ? "bg-gray-400 cursor-not-allowed"
-            : "bg-black hover:bg-gray-800"
-        }`}
-      >
-        {isSubmitting ? "送信中..." : "投稿"}
-      </button>
+      <Button type="submit" isLoading={isCreating}>
+        投稿
+      </Button>
     </form>
   );
 };

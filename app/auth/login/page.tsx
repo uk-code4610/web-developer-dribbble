@@ -2,13 +2,17 @@
 import { useState } from "react";
 import { supabase } from "@/app/lib/supabase/client";
 import { useRouter } from "next/navigation";
+import Button from "@/app/components/SendButton";
 const login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isLogin, setIsLogin] = useState(false);
   const router = useRouter();
   const loginButton = async (event: React.FormEvent) => {
     event.preventDefault();
+    setIsLogin(true);
     if (!email || !password) {
+      setIsLogin(false);
       alert("メールアドレスとパスワードを入力してください");
       return;
     }
@@ -17,9 +21,11 @@ const login = () => {
       password,
     });
     if (error) {
+      setIsLogin(false);
       alert(error.message);
     } else {
       alert("ログインしました！");
+      setIsLogin(false);
       router.push("/");
     }
   };
@@ -44,7 +50,9 @@ const login = () => {
           onChange={(e) => setPassword(e.target.value)}
           className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-black focus:outline-none"
         />
-        <button type="submit">ログイン</button>
+        <Button type="submit" isLoading={isLogin}>
+          ログイン
+        </Button>
       </form>
     </>
   );
