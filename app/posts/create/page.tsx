@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { supabase } from "@/app/lib/supabase/client";
 import { useRouter } from "next/navigation";
 
@@ -7,9 +7,24 @@ const CreatePostPage = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [imageFile, setImageFile] = useState<File | null>(null);
-  const [author, setAuthor] = useState("");
+  const [username, setUsername] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
+
+  useEffect(() => {
+    const fetchProfiles = async () => {
+      const { data: auth } = await supabase.auth.getUser();
+      const userId = auth.user?.id;
+      const { data: profiles } = await supabase
+        .from("profiles")
+        .select("name")
+        .eq("id", userId)
+        .single();
+
+      setUsername(profiles?.name ?? null);
+    };
+    fetchProfiles();
+  }, []);
 
   const addButton = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -38,14 +53,13 @@ const CreatePostPage = () => {
         title: title,
         description: description,
         image_url: imageUrl,
-        author: author,
+        author: username,
       },
     ]);
     console.log(data);
     setTitle("");
     setDescription("");
     setImageFile(null);
-    setAuthor("");
     if (error) {
       console.error("Error inserting post:", error);
       setIsSubmitting(false);
@@ -93,12 +107,10 @@ const CreatePostPage = () => {
       </label>
       <label className="block text-sm font-medium text-gray-700">
         作者
-        <input
-          type="text"
-          value={author}
-          onChange={(e) => setAuthor(e.target.value)}
-          className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-black focus:outline-none"
-        />
+        <div className="text-sm text-gray-700">
+          {" "}
+          <span className="front-medium">{username}</span>
+        </div>
       </label>
       <button
         type="submit"

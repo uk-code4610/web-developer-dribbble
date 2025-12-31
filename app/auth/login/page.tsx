@@ -20,7 +20,7 @@ const login = () => {
       alert(error.message);
     } else {
       alert("ログインしました！");
-      router.push("/posts");
+      router.push("/");
     }
   };
   return (

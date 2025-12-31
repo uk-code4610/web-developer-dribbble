@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 const Signup = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
   const router = useRouter();
 
   const signupButton = async (event: React.FormEvent) => {
@@ -18,9 +19,19 @@ const Signup = () => {
       email,
       password,
     });
+
     if (error) {
       alert(error.message);
-    } else {
+    }
+    if (!data.user) {
+      alert("ユーザー情報が取得できませんでした");
+      return;
+    }
+    {
+      await supabase.from("profiles").insert({
+        id: data.user.id,
+        name: name,
+      });
       alert("会員登録が完了しました。");
       router.push("/auth/login");
     }
@@ -37,6 +48,13 @@ const Signup = () => {
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
+          className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-black focus:outline-none"
+        />
+        <label>名前</label>
+        <input
+          type="text"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
           className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-black focus:outline-none"
         />
         <label>パスワード</label>
