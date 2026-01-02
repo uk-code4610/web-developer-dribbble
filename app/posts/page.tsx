@@ -42,6 +42,7 @@ const Page = () => {
       {display.map((display: PostCardsType) => (
         <PostCard
           key={display.id}
+          id={display.id}
           title={display.title}
           description={display.description}
           image_url={display.image_url}
