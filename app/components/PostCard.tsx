@@ -16,16 +16,24 @@ const PostCard = ({
   id,
 }: PostcardProps) => {
   return (
-    <Link
-      href={`/posts/${id}`}
-      style={{ display: "block", textDecoration: "none", color: "inherit" }}
-    >
-      <div className="border rounded-lg shadow-md p-4 max-w-sm w-full mx-auto">
-        <h2>{title}</h2>
-        <img src={image_url} alt={title} className="w-48 h-48 object-cover" />
-        <p>{description}</p>
-        <p>by {author}</p>
-      </div>
+    <Link href={`/posts/${id}`} className="block">
+      <article className="bg-[#FFF5F6] rounded-2xl shadow-sm hover:shadow-md transition-shadow p-6 max-w-sm w-full mx-auto">
+        <div className="aspect-square w-full overflow-hidden rounded-xl bg-muted">
+          <img
+            src={image_url}
+            alt={title}
+            className="h-full w-full object-cover"
+          />
+        </div>
+
+        <div className="mt-4 space-y-2">
+          <h2 className="text-lg font-medium leading-tight">{title}</h2>
+          <p className="text-sm text-muted-foreground line-clamp-2">
+            {description}
+          </p>
+          <p className="text-sm text-muted-foreground">{author}</p>
+        </div>
+      </article>
     </Link>
   );
 };
