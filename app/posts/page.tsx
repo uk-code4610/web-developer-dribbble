@@ -13,15 +13,14 @@ export interface PostCardsType {
 import { supabase } from "../lib/supabase/client";
 import PostCard from "@/app/components/PostCard";
 import { useState, useEffect } from "react";
+import { useUser } from "@/app/context/UserContext";
 
 const Page = () => {
   const [posts, setPosts] = useState<PostCardsType[]>([]);
   const [myPosts, setMyPosts] = useState(false);
-  const [userId, setUserId] = useState<string | null>(null);
+  const { userId } = useUser();
   useEffect(() => {
     const fetchPosts = async () => {
-      const Id = (await supabase.auth.getUser()).data.user?.id ?? null;
-      setUserId(Id);
       const { data, error } = await supabase
         .from("posts")
         .select("*,profiles(name)")

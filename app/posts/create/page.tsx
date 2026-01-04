@@ -1,37 +1,23 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { supabase } from "@/app/lib/supabase/client";
 import { useRouter } from "next/navigation";
+import { useUser } from "@/app/context/UserContext";
 import Button from "@/app/components/SendButton";
 
 const CreatePostPage = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [imageFile, setImageFile] = useState<File | null>(null);
-  const [username, setUsername] = useState<string | null>(null);
-  const [isCreating, setCcreating] = useState(false);
+  const [isCreating, setCreating] = useState(false);
   const router = useRouter();
 
-  useEffect(() => {
-    const fetchProfiles = async () => {
-      const { data: auth } = await supabase.auth.getUser();
-      const userId = auth.user?.id;
-      const { data: profiles } = await supabase
-        .from("profiles")
-        .select("name")
-        .eq("id", userId)
-        .single();
-
-      setUsername(profiles?.name ?? null);
-    };
-    fetchProfiles();
-  }, []);
-
+  const { userId, displayName } = useUser();
   const addButton = async (event: React.FormEvent) => {
     event.preventDefault();
     if (isCreating) return;
-    setCcreating(true);
     if (!imageFile) return;
+    setCreating(true);
     const ext = imageFile.name.split(".").pop();
     const fileName = `${Date.now()}.${ext}`;
     const { error: uploadError } = await supabase.storage
@@ -42,33 +28,31 @@ const CreatePostPage = () => {
     if (uploadError) {
       console.error(uploadError);
       alert(uploadError.message);
-      setCcreating(false);
+      setCreating(false);
       return;
     }
     const { data } = supabase.storage
       .from("post-images")
       .getPublicUrl(fileName);
     const imageUrl = data.publicUrl;
-    const { data: userData, error: userError } = await supabase.auth.getUser();
-    const userId = userData.user?.id;
     const { error } = await supabase.from("posts").insert([
       {
         title: title,
         description: description,
         image_url: imageUrl,
         user_id: userId,
+        author: displayName,
       },
     ]);
-    console.log(data);
     setTitle("");
     setDescription("");
     setImageFile(null);
     if (error) {
       console.error("Error inserting post:", error);
-      setCcreating(false);
+      setCreating(false);
     } else {
       alert("投稿が追加されました！");
-      setCcreating(false);
+      setCreating(false);
       router.push("/posts");
     }
   };
@@ -113,7 +97,7 @@ const CreatePostPage = () => {
         作者
         <div className="text-sm text-slate-700">
           {" "}
-          <span className="front-medium">{username}</span>
+          <span className="font-medium">{displayName}</span>
         </div>
       </label>
       <Button type="submit" isLoading={isCreating}>
