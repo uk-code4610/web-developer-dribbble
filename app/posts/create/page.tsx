@@ -16,7 +16,14 @@ const CreatePostPage = () => {
   const addButton = async (event: React.FormEvent) => {
     event.preventDefault();
     if (isCreating) return;
-    if (!imageFile) return;
+    if (!userId) {
+      alert("ログインしてください");
+      return;
+    }
+    if (!imageFile) {
+      alert("画像を選択してください");
+      return;
+    }
     setCreating(true);
     const ext = imageFile.name.split(".").pop();
     const fileName = `${Date.now()}.${ext}`;
@@ -49,6 +56,7 @@ const CreatePostPage = () => {
     setImageFile(null);
     if (error) {
       console.error("Error inserting post:", error);
+      alert("投稿の追加中にエラーが発生しました。");
       setCreating(false);
     } else {
       alert("投稿が追加されました！");
