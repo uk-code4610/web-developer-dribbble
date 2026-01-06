@@ -1,12 +1,5 @@
 import Link from "next/link";
-
-interface PostcardProps {
-  title: string;
-  description: string;
-  image_url: string;
-  author: string;
-  id: string;
-}
+import { PostcardProps } from "../types/post";
 
 const PostCard = ({
   title,

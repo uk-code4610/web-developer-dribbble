@@ -8,17 +8,13 @@ import {
   useContext,
 } from "react";
 import { supabase } from "@/app/lib/supabase/client";
+import { UserContextType } from "@/app/types/user";
+
 export const UserContext = createContext<UserContextType>({
   userId: null,
   displayName: null,
   isLoggedIn: false,
 });
-
-interface UserContextType {
-  userId: string | null;
-  displayName: string | null;
-  isLoggedIn: boolean;
-}
 
 export const useUser = () => useContext(UserContext);
 

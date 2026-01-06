@@ -1,19 +1,10 @@
 "use client";
-export interface PostCardsType {
-  id: string;
-  title: string;
-  description: string;
-  image_url: string;
-  user_id: string;
-  profiles: {
-    name: string;
-  } | null;
-}
 
 import PostCard from "@/app/components/PostCard";
 import { useState, useEffect } from "react";
 import { useUser } from "@/app/context/UserContext";
 import { fetchPosts } from "../lib/supabase/posts";
+import { PostCardsType } from "../types/post";
 
 const Page = () => {
   const [posts, setPosts] = useState<PostCardsType[]>([]);

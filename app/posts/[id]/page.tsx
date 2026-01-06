@@ -2,7 +2,7 @@
 
 import { supabase } from "@/app/lib/supabase/client";
 import { useState, useEffect } from "react";
-import { PostCardsType } from "../page";
+import { PostCardsType } from "@/app/types/post";
 import { useParams } from "next/navigation";
 
 const PostDetail = () => {
