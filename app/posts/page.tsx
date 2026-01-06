@@ -10,25 +10,22 @@ export interface PostCardsType {
   } | null;
 }
 
-import { supabase } from "../lib/supabase/client";
 import PostCard from "@/app/components/PostCard";
 import { useState, useEffect } from "react";
 import { useUser } from "@/app/context/UserContext";
+import { fetchPosts } from "../lib/supabase/posts";
 
 const Page = () => {
   const [posts, setPosts] = useState<PostCardsType[]>([]);
   const [myPosts, setMyPosts] = useState(false);
   const { userId } = useUser();
   useEffect(() => {
-    const fetchPosts = async () => {
-      const { data, error } = await supabase
-        .from("posts")
-        .select("*,profiles(name)")
-        .order("created_at", { ascending: false });
+    const fetchAndSetPosts = async () => {
+      const { data, error } = await fetchPosts();
       if (error) console.error("Error");
       else setPosts(data);
     };
-    fetchPosts();
+    fetchAndSetPosts();
   }, []);
 
   const display = myPosts

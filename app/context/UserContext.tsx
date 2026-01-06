@@ -27,7 +27,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
   const [displayName, setDisplayName] = useState<string | null>(null);
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   useEffect(() => {
-    const fetchProfiles = async () => {
+    const fetchMyProfiles = async () => {
       const { data } = await supabase.auth.getUser();
       const uid = data.user?.id ?? null;
       setUserId(uid);
@@ -43,7 +43,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
         .single();
       setDisplayName(profile?.name ?? null);
     };
-    fetchProfiles();
+    fetchMyProfiles();
   }, []);
 
   return (
