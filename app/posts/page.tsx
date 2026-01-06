@@ -36,39 +36,34 @@ const Page = () => {
     : posts;
 
   return (
-    <div>
-      <h1>Posts</h1>
-      {display.map((display: PostCardsType) => (
-        <PostCard
-          key={display.id}
-          id={display.id}
-          title={display.title}
-          description={display.description}
-          image_url={display.image_url}
-          author={display.profiles?.name ?? "不明"}
-        />
-      ))}
-      <div
-        style={{
-          position: "fixed",
-          top: "16px",
-          right: "16px",
-          zIndex: 10,
-        }}
-      >
-        <button
-          onClick={() => setMyPosts((prev) => !prev)}
-          style={{
-            padding: "8px 12px",
-            borderRadius: "6px",
-            border: "1px solid #ccc",
-            background: myPosts ? "#111" : "#fff",
-            color: myPosts ? "#fff" : "#111",
-            cursor: "pointer",
-          }}
-        >
-          {myPosts ? "一覧表示" : "自分の投稿"}
-        </button>
+    <div className="min-h-screen bg-[#FAF7F6]">
+      <div className="mx-auto max-w-6xl px-6 py-10">
+        <div className="mb-6 flex items-end justify-between">
+          <h1 className="text-2xl font-semibold text-neutral-900">投稿一覧</h1>
+          <button
+            onClick={() => setMyPosts((prev) => !prev)}
+            className={`rounded-full border px-4 py-2 text-sm shadow-sm transition hover:shadow-md ${
+              myPosts
+                ? "bg-neutral-900 text-white border-neutral-900"
+                : "bg-white text-neutral-900 border-neutral-200"
+            }`}
+          >
+            {myPosts ? "一覧表示" : "自分の投稿"}
+          </button>
+        </div>
+
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {display.map((post: PostCardsType) => (
+            <PostCard
+              key={post.id}
+              id={post.id}
+              title={post.title}
+              description={post.description}
+              image_url={post.image_url}
+              author={post.profiles?.name ?? "不明"}
+            />
+          ))}
+        </div>
       </div>
     </div>
   );
