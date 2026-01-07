@@ -6,3 +6,11 @@ export const fetchPosts = async () => {
     .select("*,profiles(name)")
     .order("created_at", { ascending: false });
 };
+
+export const fetchPostById = async (postId: string) => {
+  return await supabase
+    .from("posts")
+    .select("*,profiles(name)")
+    .eq("id", postId)
+    .single();
+};

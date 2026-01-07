@@ -1,50 +1,89 @@
 "use client";
 
-import { supabase } from "@/app/lib/supabase/client";
 import { useState, useEffect } from "react";
 import { PostCardsType } from "@/app/types/post";
 import { useParams } from "next/navigation";
+import { fetchPostById } from "@/app/lib/supabase/posts";
 
 const PostDetail = () => {
   const { id } = useParams<{ id: string }>();
   const postId = id;
   const [post, setPost] = useState<PostCardsType | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
   useEffect(() => {
     if (!postId) return;
-    const fetchPosts = async () => {
-      const { data } = await supabase
-        .from("posts")
-        .select("*")
-        .eq("id", postId)
-        .single();
-      setPost(data);
+
+    const fetchAndSetPost = async () => {
+      setIsLoading(true);
+      const { data, error } = await fetchPostById(postId);
+
+      if (error) {
+        console.error("Error fetching post:", error);
+        setPost(null);
+      } else {
+        setPost(data ?? null);
+      }
+
+      setIsLoading(false);
     };
-    fetchPosts();
+
+    fetchAndSetPost();
   }, [postId]);
 
+  const createdAt = post?.created_at;
+  const date = createdAt ? new Date(createdAt) : null;
+  const formatDate =
+    date && !Number.isNaN(date.getTime())
+      ? date.toLocaleDateString("ja-JP")
+      : "";
+
   return (
-    <div className="min-h-screen flex items-center justify-center p-6">
-      {post === null ? (
-        <div className="text-center">
-          <p className="text-lg font-semibold">loading...</p>
-        </div>
-      ) : (
-        <div className="text-center max-w-xl w-full">
-          <h1 className="text-2xl font-bold mb-4">{post.title}</h1>
-          <img
-            src={post.image_url}
-            alt={post.title}
-            className="mx-auto w-72 h-72 object-cover rounded-lg shadow mb-4"
-          />
-          <p className="text-sm leading-relaxed">{post.description}</p>
-          <button
-            onClick={() => window.history.back()}
-            className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-          >
-            一覧へ
-          </button>
-        </div>
-      )}
+    <div className="min-h-screen bg-[#FAF7F6] py-12 px-6">
+      <div className="mx-auto max-w-3xl">
+        {isLoading ? (
+          <div className="flex items-center justify-center py-24">
+            <p className="text-sm text-neutral-500">loading...</p>
+          </div>
+        ) : post === null ? (
+          <div className="flex items-center justify-center py-24">
+            <p className="text-sm text-neutral-500">投稿が見つかりません</p>
+          </div>
+        ) : (
+          <div className="rounded-2xl bg-white p-8 shadow-sm">
+            <h1 className="text-3xl font-semibold text-neutral-900 mb-6">
+              {post.title}
+            </h1>
+            <img
+              src={post.image_url}
+              alt={post.title}
+              className="mx-auto w-full max-w-md aspect-square object-cover rounded-xl shadow mb-6"
+            />
+            <div className="mb-6 flex items-center gap-4 text-sm text-neutral-500">
+              <span>
+                作成者：
+                <span className="font-medium text-neutral-700">
+                  {post.profiles?.name ?? "不明"}
+                </span>
+              </span>
+              {formatDate && (
+                <span className="before:mx-2 before:text-neutral-300 before:content-['·']">
+                  {formatDate}
+                </span>
+              )}
+            </div>
+            <p className="text-sm leading-relaxed text-neutral-700">
+              {post.description}
+            </p>
+            <button
+              onClick={() => window.history.back()}
+              className="mt-8 inline-block text-sm text-neutral-500 hover:text-neutral-900 transition"
+            >
+              一覧へ
+            </button>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

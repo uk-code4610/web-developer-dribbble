@@ -4,6 +4,7 @@ export interface PostCardsType {
   description: string;
   image_url: string;
   user_id: string;
+  created_at?: string;
   profiles: {
     name: string;
   } | null;
