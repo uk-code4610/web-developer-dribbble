@@ -1,18 +1,21 @@
-interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+import type { ButtonHTMLAttributes } from "react";
+
+interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   isLoading: boolean;
   className?: string;
 }
 
-const SendButton = ({
+export const LoadingButton = ({
   children,
   isLoading,
   className = "",
+  disabled,
   ...props
 }: ButtonProps) => {
   return (
     <button
       {...props}
-      disabled={isLoading}
+      disabled={isLoading || disabled}
       className={`w-full rounded-md py-2 text-sm font-semibold text-white ${
         isLoading
           ? "bg-gray-400 cursor-not-allowed"
@@ -23,5 +26,3 @@ const SendButton = ({
     </button>
   );
 };
-
-export default SendButton;

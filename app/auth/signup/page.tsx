@@ -2,7 +2,9 @@
 import { useState } from "react";
 import { supabase } from "@/app/lib/supabase/client";
 import { useRouter } from "next/navigation";
-import Button from "@/app/components/SendButton";
+import { LoadingButton } from "@/app/components/LoadingButton";
+import { AuthFormShell } from "@/app/components/auth/ AuthFormShell";
+import { AuthField } from "@/app/components/auth/AuthField ";
 
 const Signup = () => {
   const [email, setEmail] = useState("");
@@ -27,88 +29,64 @@ const Signup = () => {
     if (error) {
       setIsSignup(false);
       alert(error.message);
+      return;
     }
     if (!data.user) {
       setIsSignup(false);
       alert("ユーザー情報が取得できませんでした");
       return;
     }
-    {
-      await supabase.from("profiles").insert({
-        id: data.user.id,
-        name: name,
-      });
+    const { error: profileError } = await supabase.from("profiles").insert({
+      id: data.user.id,
+      name: name,
+    });
+    if (profileError) {
       setIsSignup(false);
-      alert("会員登録が完了しました。");
-      router.push("/auth/login");
+      alert(profileError.message);
+      return;
     }
+    setIsSignup(false);
+    alert("会員登録が完了しました。");
+    router.push("/auth/login");
   };
   const toLogin = () => {
     router.push("/auth/login");
   };
   return (
-    <div className="mx-auto flex w-full max-w-md flex-col gap-6 px-4 py-10">
-      <h2 className="text-center text-2xl font-bold tracking-tight">
-        新規会員登録
-      </h2>
-
-      <form
+    <>
+      <AuthFormShell
+        title="新規会員登録"
         onSubmit={signupButton}
-        className="w-full space-y-4 rounded-xl border border-gray-200 bg-white p-6 shadow-sm"
+        footerText="登録済みの方はこちら"
+        onFooterClick={toLogin}
       >
-        <div className="space-y-2">
-          <label className="block text-sm font-medium text-gray-700">
-            メールアドレス
-          </label>
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm outline-none ring-0 transition focus:border-black focus:ring-1 focus:ring-black"
-          />
-        </div>
-
-        <div className="space-y-2">
-          <label className="block text-sm font-medium text-gray-700">
-            名前
-          </label>
-          <input
-            type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm outline-none ring-0 transition focus:border-black focus:ring-1 focus:ring-black"
-          />
-        </div>
-
-        <div className="space-y-2">
-          <label className="block text-sm font-medium text-gray-700">
-            パスワード
-          </label>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm outline-none ring-0 transition focus:border-black focus:ring-1 focus:ring-black"
-          />
-        </div>
-
-        <Button
+        <AuthField
+          title="メールアドレス"
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <AuthField
+          title="名前"
+          type="text"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+        />
+        <AuthField
+          title="パスワード"
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        <LoadingButton
           type="submit"
           isLoading={isSignup}
           className="w-full rounded-md bg-pink-200 px-4 py-2 text-sm font-semibold text-gray-900 transition hover:bg-pink-300 disabled:opacity-60"
         >
           新規会員登録
-        </Button>
-      </form>
-
-      <button
-        onClick={toLogin}
-        type="button"
-        className="w-full text-center text-sm font-medium text-blue-600 transition hover:text-blue-700"
-      >
-        登録済みの方はこちら
-      </button>
-    </div>
+        </LoadingButton>
+      </AuthFormShell>
+    </>
   );
 };
 export default Signup;
