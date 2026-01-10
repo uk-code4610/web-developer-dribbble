@@ -6,13 +6,14 @@ const Page = () => {
   const router = useRouter();
   const { isLoggedIn } = useUser();
 
-  const toMypage = () => {
-    if (!isLoggedIn) {
+  const requireLoginThen = (path: string) => {
+    if (isLoggedIn === null) return;
+    if (isLoggedIn === false) {
       alert("ログインしてください");
-      router.push("auth/login");
+      router.push(`/auth/login?next=${encodeURIComponent(path)}`);
       return;
     }
-    router.push("/mypage");
+    router.push(path);
   };
 
   return (
@@ -26,14 +27,14 @@ const Page = () => {
         </button>
 
         <button
-          onClick={() => router.push("/posts/create")}
+          onClick={() => requireLoginThen("/posts/create")}
           className="w-64 px-8 py-4 rounded-2xl bg-white text-[#6B7CFF] text-lg shadow-md hover:bg-[#F4F1F0] transition"
         >
           新規作成
         </button>
         <button
           className="w-64 px-8 py-4 rounded-2xl bg-white text-[#6B7CFF] text-lg shadow-md hover:bg-[#F4F1F0] transition"
-          onClick={toMypage}
+          onClick={() => requireLoginThen("/mypage")}
         >
           マイページ
         </button>

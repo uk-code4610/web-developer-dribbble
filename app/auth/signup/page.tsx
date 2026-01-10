@@ -47,42 +47,68 @@ const Signup = () => {
     router.push("/auth/login");
   };
   return (
-    <>
-      <h2>新規会員登録</h2>
+    <div className="mx-auto flex w-full max-w-md flex-col gap-6 px-4 py-10">
+      <h2 className="text-center text-2xl font-bold tracking-tight">
+        新規会員登録
+      </h2>
+
       <form
         onSubmit={signupButton}
-        className="mx-auto mt-10 max-w-md space-y-4 rounded-xl border border-gray-200 bg-white p-6 shadow"
+        className="w-full space-y-4 rounded-xl border border-gray-200 bg-white p-6 shadow-sm"
       >
-        <label>メールアドレス</label>
-        <input
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-black focus:outline-none"
-        />
-        <label>名前</label>
-        <input
-          type="text"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-black focus:outline-none"
-        />
-        <label>パスワード</label>
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-black focus:outline-none"
-        />
-        <Button type="submit" isLoading={isSignup}>
+        <div className="space-y-2">
+          <label className="block text-sm font-medium text-gray-700">
+            メールアドレス
+          </label>
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm outline-none ring-0 transition focus:border-black focus:ring-1 focus:ring-black"
+          />
+        </div>
+
+        <div className="space-y-2">
+          <label className="block text-sm font-medium text-gray-700">
+            名前
+          </label>
+          <input
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm outline-none ring-0 transition focus:border-black focus:ring-1 focus:ring-black"
+          />
+        </div>
+
+        <div className="space-y-2">
+          <label className="block text-sm font-medium text-gray-700">
+            パスワード
+          </label>
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm outline-none ring-0 transition focus:border-black focus:ring-1 focus:ring-black"
+          />
+        </div>
+
+        <Button
+          type="submit"
+          isLoading={isSignup}
+          className="w-full rounded-md bg-pink-200 px-4 py-2 text-sm font-semibold text-gray-900 transition hover:bg-pink-300 disabled:opacity-60"
+        >
           新規会員登録
         </Button>
-
-        <button onClick={toLogin} type="button">
-          登録済みの方はこちら
-        </button>
       </form>
-    </>
+
+      <button
+        onClick={toLogin}
+        type="button"
+        className="w-full text-center text-sm font-medium text-blue-600 transition hover:text-blue-700"
+      >
+        登録済みの方はこちら
+      </button>
+    </div>
   );
 };
 export default Signup;

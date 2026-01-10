@@ -1,8 +1,14 @@
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   isLoading: boolean;
+  className?: string;
 }
 
-const SendButton = ({ children, isLoading, ...props }: ButtonProps) => {
+const SendButton = ({
+  children,
+  isLoading,
+  className = "",
+  ...props
+}: ButtonProps) => {
   return (
     <button
       {...props}
@@ -11,7 +17,7 @@ const SendButton = ({ children, isLoading, ...props }: ButtonProps) => {
         isLoading
           ? "bg-gray-400 cursor-not-allowed"
           : "bg-black hover:bg-gray-800"
-      }`}
+      } ${className}`}
     >
       {isLoading ? "処理中..." : children}
     </button>

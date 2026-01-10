@@ -13,7 +13,7 @@ import { UserContextType } from "@/app/types/user";
 export const UserContext = createContext<UserContextType>({
   userId: null,
   displayName: null,
-  isLoggedIn: false,
+  isLoggedIn: null,
 });
 
 export const useUser = () => useContext(UserContext);
@@ -21,9 +21,10 @@ export const useUser = () => useContext(UserContext);
 export const UserProvider = ({ children }: { children: ReactNode }) => {
   const [userId, setUserId] = useState<string | null>(null);
   const [displayName, setDisplayName] = useState<string | null>(null);
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean | null>(null);
   useEffect(() => {
     const fetchMyProfiles = async () => {
+      setIsLoggedIn(false);
       const { data } = await supabase.auth.getUser();
       const uid = data.user?.id ?? null;
       setUserId(uid);
