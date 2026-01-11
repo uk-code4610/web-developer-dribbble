@@ -61,7 +61,7 @@ const Mypage = () => {
                 className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 placeholder:text-slate-400 shadow-sm outline-none transition focus:border-slate-300 focus:ring-4 focus:ring-slate-200"
               />
               <div className="mt-6 grid grid-cols-3 gap-6">
-                <div className="mt-6 flex w-full max-w-[180px] flex-col items-center rounded-xl bg-slate-50 px-4 py-3">
+                <div className="mt-6 flex w-full max-w-180px flex-col items-center rounded-xl bg-slate-50 px-4 py-3">
                   <span className="text-xs text-slate-500">投稿数</span>
                   <span className="mt-1 text-2xl font-semibold text-slate-900">
                     {userPosts.length}
