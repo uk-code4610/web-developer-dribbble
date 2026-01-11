@@ -3,7 +3,7 @@ import { useState } from "react";
 import { supabase } from "@/app/lib/supabase/client";
 import { useRouter } from "next/navigation";
 import { useUser } from "@/app/context/UserContext";
-import Button from "@/app/components/LoadingButton";
+import { LoadingButton } from "@/app/components/LoadingButton";
 
 const CreatePostPage = () => {
   const [title, setTitle] = useState("");
@@ -108,9 +108,9 @@ const CreatePostPage = () => {
           <span className="font-medium">{displayName}</span>
         </div>
       </label>
-      <Button type="submit" isLoading={isCreating}>
+      <LoadingButton type="submit" isLoading={isCreating}>
         投稿
-      </Button>
+      </LoadingButton>
     </form>
   );
 };
