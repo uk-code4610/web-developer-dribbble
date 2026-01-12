@@ -22,3 +22,11 @@ export const myFetchPosts = async (user_Id: string) => {
     .eq("user_id", user_Id)
     .order("created_at", { ascending: false });
 };
+
+export const FetchFeatured = async () => {
+  return await supabase
+    .from("posts")
+    .select("*, profiles(name)")
+    .order("created_at", { ascending: false })
+    .limit(6);
+};
