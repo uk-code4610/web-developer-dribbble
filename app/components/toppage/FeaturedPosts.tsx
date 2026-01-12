@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { FetchFeatured } from "@/app/lib/supabase/posts";
-import PostCard from "../PostCard";
+import { PostCard } from "../PostCard";
 import { PostCardsType } from "@/app/types/post";
 
 export const FeaturedPosts = () => {

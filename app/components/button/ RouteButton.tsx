@@ -1,11 +1,7 @@
-import { useRouter } from "next/navigation";
+"use client";
 
-type RouteButtonProps = {
-  title: string;
-  href: string;
-  className?: string;
-  disabled?: boolean;
-};
+import { useRouter } from "next/navigation";
+import { RouteButtonProps } from "@/app/types/route";
 
 export const RouteButton = ({
   title,

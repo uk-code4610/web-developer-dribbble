@@ -1,6 +1,6 @@
 "use client";
 
-import PostCard from "@/app/components/PostCard";
+import { PostCard } from "@/app/components/PostCard";
 import { useState, useEffect } from "react";
 import { useUser } from "@/app/context/UserContext";
 import { fetchPosts } from "../lib/supabase/posts";

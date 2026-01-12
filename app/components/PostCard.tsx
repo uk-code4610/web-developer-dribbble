@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { PostcardProps } from "../types/post";
 
-const PostCard = ({
+export const PostCard = ({
   title,
   description,
   image_url,
@@ -30,5 +30,3 @@ const PostCard = ({
     </Link>
   );
 };
-
-export default PostCard;

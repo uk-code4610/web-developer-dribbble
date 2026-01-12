@@ -1,8 +1,10 @@
+"use client";
+
 import { RouteButton } from "../button/ RouteButton";
 
 export const Footer = () => {
   return (
-    <section className="w-full bg-gradient-to-br from-pink-200 via-violet-200 to-blue-200 py-24">
+    <section className="w-full bg-linear-to-br from-pink-200 via-violet-200 to-blue-200 py-24">
       <div className="mx-auto flex max-w-5xl flex-col items-center justify-center px-6 text-center">
         <h2 className="text-3xl font-medium tracking-wide text-gray-800 md:text-4xl">
           あなたの作品を投稿してみませんか？

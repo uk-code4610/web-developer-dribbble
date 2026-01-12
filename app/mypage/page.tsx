@@ -5,7 +5,7 @@ import { PostCardsType } from "../types/post";
 import { useUser } from "../context/UserContext";
 import { myFetchPosts } from "../lib/supabase/posts";
 import { useRequireAuth } from "../hooks/useRequireAuth";
-import PostCard from "../components/PostCard";
+import { PostCard } from "../components/PostCard";
 
 const Mypage = () => {
   const router = useRouter();
