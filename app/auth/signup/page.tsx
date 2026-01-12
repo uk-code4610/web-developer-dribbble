@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { supabase } from "@/app/lib/supabase/client";
 import { useRouter } from "next/navigation";
-import { LoadingButton } from "@/app/components/LoadingButton";
+import { LoadingButton } from "@/app/components/button/LoadingButton";
 import { AuthFormShell } from "@/app/components/auth/ AuthFormShell";
 import { AuthField } from "@/app/components/auth/AuthField ";
 

@@ -3,7 +3,7 @@ import { useState } from "react";
 import { supabase } from "@/app/lib/supabase/client";
 import { useRouter } from "next/navigation";
 import { useUser } from "@/app/context/UserContext";
-import { LoadingButton } from "@/app/components/LoadingButton";
+import { LoadingButton } from "@/app/components/button/LoadingButton";
 
 const CreatePostPage = () => {
   const [title, setTitle] = useState("");
