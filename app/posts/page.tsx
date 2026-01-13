@@ -24,7 +24,7 @@ const Page = () => {
     : posts;
 
   return (
-    <div className="min-h-screen bg-[#FAF7F6]">
+    <div className="min-h-screen ">
       <div className="mx-auto max-w-6xl px-6 py-10">
         <div className="mb-6 flex items-end justify-between">
           <h1 className="text-2xl font-semibold text-neutral-900">投稿一覧</h1>

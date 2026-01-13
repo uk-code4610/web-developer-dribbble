@@ -4,9 +4,8 @@ import { useRouter } from "next/navigation";
 export const Hero = () => {
   const router = useRouter();
   return (
-    <section className="w-full bg-sky-50/60">
+    <section className="w-full bg-linear-to-br from-[#FFF5F7] via-[#F5F9FF] to-white">
       <div className="mx-auto flex max-w-6xl items-center gap-10 px-6 py-14">
-        {/* 左：テキスト */}
         <div className="flex-1">
           <p className="mb-3 inline-flex items-center rounded-full bg-white/70 px-3 py-1 text-xs font-medium text-gray-700 shadow-sm">
             初心者でも投稿しやすいポートフォリオ共有
