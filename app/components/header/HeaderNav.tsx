@@ -3,13 +3,14 @@
 import { usePathname } from "next/navigation";
 import { RouteButton } from "../button/ RouteButton";
 import { RequireAuthButton } from "../button/RequireAuthButton";
+import { HeaderLogo } from "./HeaderLogo";
 
 export const HeaderNav = () => {
   const pathname = usePathname();
   return (
     <header className="w-full border-b bg-white/80 backdrop-blur supports-backdrop-filter:bg-white/60">
       <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-4">
-        <div className="text-sm font-semibold text-gray-800">GrowForio</div>
+        <HeaderLogo />
         {pathname === "/auth/login" || pathname === "/auth/signup" ? null : (
           <nav className="flex items-center gap-2">
             <RouteButton
