@@ -4,11 +4,13 @@ import { supabase } from "@/app/lib/supabase/client";
 import { useRouter } from "next/navigation";
 import { useUser } from "@/app/context/UserContext";
 import { LoadingButton } from "@/app/components/button/LoadingButton";
+import { categories } from "@/app/constants/categories";
 
 const CreatePostPage = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [imageFile, setImageFile] = useState<File | null>(null);
+  const [selectCategory, setSelectCategory] = useState(categories[0].value);
   const [isCreating, setCreating] = useState(false);
   const router = useRouter();
 
@@ -47,6 +49,7 @@ const CreatePostPage = () => {
         title: title,
         description: description,
         image_url: imageUrl,
+        category: selectCategory,
         user_id: userId,
         author: displayName,
       },
@@ -100,6 +103,20 @@ const CreatePostPage = () => {
           }}
           className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-sky-400 focus:outline-none bg-white"
         />
+      </label>
+      <label className="block text-sm font-medium text-slate-700">
+        カテゴリ
+        <select
+          value={selectCategory}
+          onChange={(e) => setSelectCategory(e.target.value)}
+          className="w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm focus:border-sky-400 focus:outline-none"
+        >
+          {categories.map((category) => (
+            <option key={category.value} value={category.value}>
+              {category.label}
+            </option>
+          ))}
+        </select>
       </label>
       <label className="block text-sm font-medium text-slate-700">
         作者

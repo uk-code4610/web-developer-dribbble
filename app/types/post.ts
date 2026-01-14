@@ -3,6 +3,7 @@ export interface PostCardsType {
   title: string;
   description: string;
   image_url: string;
+  category: string;
   user_id: string;
   created_at?: string;
   profiles: {
@@ -15,5 +16,6 @@ export interface PostcardProps {
   description: string;
   image_url: string;
   author: string;
+  category: string;
   id: string;
 }
