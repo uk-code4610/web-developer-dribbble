@@ -5,6 +5,8 @@ import { useRouter } from "next/navigation";
 import { useUser } from "@/app/context/UserContext";
 import { LoadingButton } from "@/app/components/button/LoadingButton";
 import { categories } from "@/app/constants/categories";
+import { CreateForm } from "@/app/components/create/CreateForm";
+import { TextField } from "@/app/components/create/TextField";
 
 const CreatePostPage = () => {
   const [title, setTitle] = useState("");
@@ -69,28 +71,17 @@ const CreatePostPage = () => {
   };
 
   return (
-    <form
-      onSubmit={addButton}
-      className="mx-auto mt-10 max-w-md space-y-4 rounded-xl border border-blue-100 bg-[#F2FAFF] p-6 shadow-sm"
-    >
-      <label className="block text-sm font-medium text-slate-700">
-        タイトル
-        <input
-          type="text"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-sky-400 focus:outline-none bg-white"
-        />
-      </label>
-      <label className="block text-sm font-medium text-slate-700">
-        説明
-        <input
-          type="text"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-          className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-sky-400 focus:outline-none bg-white"
-        />
-      </label>
+    <CreateForm onSubmit={addButton}>
+      <TextField
+        title="タイトル"
+        value={title}
+        onChange={(e) => setTitle(e.target.value)}
+      />
+      <TextField
+        title="説明"
+        value={description}
+        onChange={(e) => setDescription(e.target.value)}
+      />
       <label className="block text-sm font-medium text-slate-700">
         画像
         <input
@@ -128,7 +119,7 @@ const CreatePostPage = () => {
       <LoadingButton type="submit" isLoading={isCreating}>
         投稿
       </LoadingButton>
-    </form>
+    </CreateForm>
   );
 };
 
