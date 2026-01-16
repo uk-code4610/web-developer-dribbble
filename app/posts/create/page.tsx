@@ -56,15 +56,15 @@ const CreatePostPage = () => {
         author: displayName,
       },
     ]);
-    setTitle("");
-    setDescription("");
-    setImageFile(null);
     if (error) {
       console.error("Error inserting post:", error);
       alert("投稿の追加中にエラーが発生しました。");
       setCreating(false);
     } else {
       alert("投稿が追加されました！");
+      setTitle("");
+      setDescription("");
+      setImageFile(null);
       setCreating(false);
       router.push("/posts");
     }
