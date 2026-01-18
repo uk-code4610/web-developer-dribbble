@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 import { useUser } from "@/app/context/UserContext";
 import { fetchPosts } from "../lib/supabase/posts";
 import { PostCardsType } from "../types/post";
-import { categoryMap } from "@/app/constants/categories";
+import { categoryLabels } from "@/app/constants/categories";
 
 const Page = () => {
   const [posts, setPosts] = useState<PostCardsType[]>([]);
@@ -21,7 +21,7 @@ const Page = () => {
   }, []);
 
   const getCategoryLabel = (category?: string | null) => {
-    return categoryMap[category ?? ""] ?? "不明";
+    return categoryLabels[category ?? ""] ?? "不明";
   };
 
   const display = myPosts
